@@ -1,11 +1,13 @@
 Game =
   _display: null
   _currentScreen: null
+  _screenHeight: 24
+  _screenWidth: 80
   init: ->
     # initialize the things
     @_display = new ROT.Display
-      width: 80
-      height: 24
+      width: @_screenWidth
+      height: @_screenHeight
 
     # don't lose this.
     game = @
@@ -17,14 +19,23 @@ Game =
         # input handling function.
         if game._currentScreen != null
           game._currentScreen.handleInput(event, e)
+          game._display.clear()
+          game._currentScreen.render(game._display)
       )
 
     bindEventToScreen("keydown")
-    bindEventToScreen("keyup")
-    bindEventToScreen("keypress")
+    # bindEventToScreen("keyup")
+    # bindEventToScreen("keypress")
 
   getDisplay: ->
     @_display
+
+  getWidth: ->
+    @_screenWidth
+
+  getHeight: ->
+    @_screenHeight
+
   switchScreen: (screen) ->
     # If there was a previous screen, notify it that we're exiting it
     if @_currentScreen != null

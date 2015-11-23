@@ -4,6 +4,7 @@ class Map
     # Grab our width and height from the passed array.
     @_width = tiles.length
     @_height = tiles[0].length
+    console.log(@_width, @_height)
   # Getters
   getWidth: ->
     @_width
