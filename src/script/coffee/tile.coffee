@@ -1,14 +1,29 @@
-class Tile
-  constructor: (glyph) ->
-    @_glyph = glyph
+class Tile extends Glyph
+  constructor: (options) ->
+    options = options or {}
+    super(options)
+    @_isWalkable = options.isWalkable || false
+    @_isDiggable = options.isDiggable || false
 
-  getGlyph: ->
-    @_glyph
+  isWalkable: ->
+    @_isWalkable
+
+  isDiggableable: ->
+    @_isDiggable
 
 
 Game.Tile = Tile
 
 # Set some standard tiles
-Game.Tile.nullTile = new Game.Tile(new Game.Glyph())
-Game.Tile.wallTile = new Game.Tile(new Game.Glyph('#', 'goldenrod'))
-Game.Tile.floorTile = new Game.Tile(new Game.Glyph('.'))
+Game.Tile.nullTile = new Game.Tile({})
+
+Game.Tile.wallTile = new Game.Tile({
+  symbol: '#',
+  foreground: 'goldenrod',
+  isDiggable: true,
+})
+
+Game.Tile.floorTile = new Game.Tile({
+  symbol: '.',
+  isWalkable: true,
+})

@@ -69,7 +69,7 @@ Game.Screen.playScreen =
     # Render the map to the display
     for x in [topLeftX..(topLeftX + screenWidth)]
       for y in [topLeftY..(topLeftY + screenHeight)]
-        glyph = @_map.getTile(x,y).getGlyph()
+        glyph = @_map.getTile(x,y)
         display.draw(x - topLeftX, y - topLeftY, glyph.getChar(),
           glyph.getForeground(), glyph.getBackground())
     # TEMP draw player
