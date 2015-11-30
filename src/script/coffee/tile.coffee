@@ -8,7 +8,7 @@ class Tile extends Glyph
   isWalkable: ->
     @_isWalkable
 
-  isDiggableable: ->
+  isDiggable: ->
     @_isDiggable
 
 

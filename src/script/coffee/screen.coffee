@@ -23,10 +23,9 @@ Game.Screen.startScreen =
 
 Game.Screen.playScreen =
   _map: null
-  _centerX: 0
-  _centerY: 0
   _mapWidth: 500,
   _mapHeight: 500,
+  _player: null,
   enter: ->
     console.log("Entered Play Screen")
     # Set up map. Empty map to begin with.
@@ -47,6 +46,8 @@ Game.Screen.playScreen =
         map[x][y] = Game.Tile.floorTile
     )
     @_map = new Game.Map(map)
+    @_player = new Entity(Game.playerTemplate)
+    @_player.setXY(@_map.getRandomFloorTile())
 
   exit: ->
     console.log("Exited Play Screen")
@@ -55,13 +56,13 @@ Game.Screen.playScreen =
     screenWidth = Game.getWidth()
     screenHeight = Game.getHeight()
     # Make sure the x-axis doesn't go to the left of the left bound
-    topLeftX = Math.max(0, @_centerX - (screenWidth / 2));
+    topLeftX = Math.max(0, @_player.getX() - (screenWidth / 2));
 
     # Make sure we still have enough space to fit an entire game screen
     topLeftX = Math.min(topLeftX, @_map.getWidth() - screenWidth);
 
     # Make sure the y-axis doesn't above the top bound
-    topLeftY = Math.max(0, @_centerY - (screenHeight / 2));
+    topLeftY = Math.max(0, @_player.getY() - (screenHeight / 2));
 
     # Make sure we still have enough space to fit an entire game screen
     topLeftY = Math.min(topLeftY, @_map.getHeight() - screenHeight);
@@ -73,18 +74,17 @@ Game.Screen.playScreen =
         display.draw(x - topLeftX, y - topLeftY, glyph.getChar(),
           glyph.getForeground(), glyph.getBackground())
     # TEMP draw player
-    display.draw(@_centerX - topLeftX, @_centerY - topLeftY, '@', 'white', 'black')
+    display.draw(@_player.getX() - topLeftX, @_player.getY() - topLeftY,
+      '@', 'white', 'black')
 
   move: (cx, cy) ->
     # X
-    @_centerX = Math.max(0, Math.min(
-      @_map.getWidth() - 1, (@_centerX + cx)
-    ))
+    dX = @_player.getX() + cx
 
     # Y
-    @_centerY = Math.max(0, Math.min(
-      @_map.getHeight() - 1, (@_centerY + cy)
-    ))
+    dY = @_player.getY() + cy
+
+    @_player.tryMove(dX, dY, @_map)
 
   handleInput: (eventType, event) ->
     if eventType == "keydown"

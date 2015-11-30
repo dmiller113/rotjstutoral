@@ -18,4 +18,19 @@ class Map
     else
       Game.Tile.nullTile
 
+  getRandomFloorTile: () ->
+    loop
+      rX = Math.floor(ROT.RNG.getUniform() * @_width)
+      rY = Math.floor(ROT.RNG.getUniform() * @_height)
+      break if @getTile(rX, rY) == Game.Tile.floorTile
+    {
+      x: rX, y: rY,
+    }
+
+  dig: (x, y) ->
+    # Check to see if we can dig the passed location
+    tile = @getTile(x, y)
+    if tile.isDiggable()
+      @_tiles[x][y] = Game.Tile.floorTile
+
 Game.Map = Map
