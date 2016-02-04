@@ -8,15 +8,21 @@ class Entity extends Glyph
     @_name = options.name || ""
     @_x = options.x || 0
     @_y = options.y || 0
+    @_map = options.map || null
 
     # Handle Mixins
     @_attachedMixins = {}
+    @_attachedMixinGroups = {}
 
     mixins = options.mixins || []
 
     for mixin in mixins
       # Add the mixin to the attached mixin object
       @_attachedMixins[mixin.name] = true
+
+      # If the mixin is part of a group, note that we have that group
+      if "groupName" of mixin
+        @_attachedMixinGroups[mixin.groupName] = true
 
       # Add the properties of the mixin to this entity.
       for key, value of mixin when (key != "name" && key != "init" && !@hasOwnProperty(key))
@@ -43,6 +49,9 @@ class Entity extends Glyph
       @setX(x)
       @setY(y)
 
+  setMap: (map) ->
+    @_map = map
+
   getName: () ->
     @_name
 
@@ -58,12 +67,15 @@ class Entity extends Glyph
       y: @_y,
     }
 
+  getMap: () ->
+    @_map
+
   # Can pass either the mixin itself or its name
   hasMixin: (obj) ->
     if typeof obj == "object"
       @_attachedMixins[obj.name] || false
     else if typeof obj == "string"
-      @_attachedMixins[obj] || false
+      @_attachedMixins[obj] || @_attachedMixinGroups[obj] || false
     else
       false
 
@@ -73,5 +85,12 @@ Game.playerTemplate = {
   symbol: "@",
   foreground: "white",
   background: "black",
-  mixins: [Game.Mixins.Movable]
+  mixins: [Game.Mixins.Movable, Game.Mixins.PlayerActor]
+}
+
+Game.fungusTemplate = {
+  name: "Fungus",
+  symbol: "F",
+  foreground: "chartreuse",
+  mixins: [Game.Mixins.FungusActor]
 }

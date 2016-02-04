@@ -19,8 +19,6 @@ Game =
         # input handling function.
         if game._currentScreen != null
           game._currentScreen.handleInput(event, e)
-          game._display.clear()
-          game._currentScreen.render(game._display)
       )
 
     bindEventToScreen("keydown")
@@ -36,18 +34,22 @@ Game =
   getHeight: ->
     @_screenHeight
 
+  refresh: () ->
+    if @_display != null and @_currentScreen != null
+      @_display.clear()
+      @_currentScreen.render(@_display)
+
   switchScreen: (screen) ->
     # If there was a previous screen, notify it that we're exiting it
     if @_currentScreen != null
       @_currentScreen.exit()
     # Set our current screen
-    @getDisplay().clear()
     @_currentScreen = screen
     # If we're not swapping to a null/undefined screen, call its enter function
     # and display it.
     if @_currentScreen != null
       @_currentScreen.enter()
-      @_currentScreen.render(@_display)
+      @refresh()
 
 window.onload = (event) ->
     # initialize the page

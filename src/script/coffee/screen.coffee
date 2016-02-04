@@ -45,12 +45,13 @@ Game.Screen.playScreen =
       else
         map[x][y] = Game.Tile.floorTile
     )
-    @_map = new Game.Map(map)
     @_player = new Entity(Game.playerTemplate)
-    @_player.setXY(@_map.getRandomFloorTile())
+    @_map = new Game.Map(map, @_player)
+    @_map.getEngine().start()
 
   exit: ->
     console.log("Exited Play Screen")
+
   render: (display) ->
     # Figure out where our top left cell should be
     screenWidth = Game.getWidth()
@@ -73,9 +74,13 @@ Game.Screen.playScreen =
         glyph = @_map.getTile(x,y)
         display.draw(x - topLeftX, y - topLeftY, glyph.getChar(),
           glyph.getForeground(), glyph.getBackground())
-    # TEMP draw player
-    display.draw(@_player.getX() - topLeftX, @_player.getY() - topLeftY,
-      '@', 'white', 'black')
+
+    for entity in @_map.getEntities()
+      pos = entity.getXY()
+      if (pos.x >= topLeftX && pos.x < (topLeftX + screenWidth) &&
+          pos.y >= topLeftY && pos.y < (topLeftY + screenHeight))
+        display.draw(pos.x - topLeftX, pos.y - topLeftY, entity.getChar(),
+          entity.getForeground(), entity.getBackground())
 
   move: (cx, cy) ->
     # X
@@ -104,6 +109,7 @@ Game.Screen.playScreen =
             @move(0, -1);
         when ROT.VK_DOWN
             @move(0, 1);
+      @_map.getEngine().unlock()
 
 Game.Screen.winScreen =
   enter: ->
