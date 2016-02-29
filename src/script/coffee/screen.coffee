@@ -23,8 +23,8 @@ Game.Screen.startScreen =
 
 Game.Screen.playScreen =
   _map: null
-  _mapWidth: 500,
-  _mapHeight: 500,
+  _mapWidth: 240,
+  _mapHeight: 72,
   _player: null,
   enter: ->
     console.log("Entered Play Screen")
@@ -33,7 +33,7 @@ Game.Screen.playScreen =
     # Ugly list comprehenions
     map.push(Game.Tile.nullTile for y in [0..(@_mapHeight - 1)]) for num in [0..(@_mapWidth - 1)]
     # Set up map generator from ROT
-    generator = new ROT.Map.Cellular(@_mapWidth, @_mapWidth)
+    generator = new ROT.Map.Cellular(@_mapWidth, @_mapHeight)
     generator.randomize(0.5)
     # We're going to smooth the automita 3 times.
     totalIterations = 3

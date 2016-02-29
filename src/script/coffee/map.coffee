@@ -15,10 +15,11 @@ class Map
     @_height = tiles[0].length
 
     # Add the player
-    @addEntityAtRandomPosition(player)
+    if typeof player != undefined
+      @addEntityAtRandomPosition(player)
 
     # Add some fungi
-    for t in [0..499]
+    for t in [0..19]
       @addEntityAtRandomPosition(new Entity(Game.fungusTemplate))
 
   # Getters
@@ -40,7 +41,7 @@ class Map
     loop
       rX = Math.floor(ROT.RNG.getUniform() * @_width)
       rY = Math.floor(ROT.RNG.getUniform() * @_height)
-      break if ((@getTile(rX, rY) == Game.Tile.floorTile))
+      break if @isEmptyFloor(rX, rY)
     {
       x: rX, y: rY,
     }
@@ -59,6 +60,9 @@ class Map
         return entity
 
     return false
+
+  isEmptyFloor: (x, y) ->
+    @getTile(x, y) == Game.Tile.floorTile and !@getEntityAt(x, y)
 
   addEntity: (entity) ->
     pos = entity.getXY()
@@ -82,6 +86,15 @@ class Map
     entity.setX(pos.x)
     entity.setY(pos.y)
     @addEntity(entity)
+
+  removeEntity: (entity) ->
+    for i in [0..@_entities.length-1]
+      if @_entities[i] == entity
+        @_entities.splice(i, 1)
+        break
+
+    if entity.hasMixin("Actor")
+      @_scheduler.remove(entity)
 
   dig: (x, y) ->
     # Check to see if we can dig the passed location

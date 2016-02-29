@@ -85,12 +85,13 @@ Game.playerTemplate = {
   symbol: "@",
   foreground: "white",
   background: "black",
-  mixins: [Game.Mixins.Movable, Game.Mixins.PlayerActor]
+  mixins: [Game.Mixins.Movable, Game.Mixins.PlayerActor,
+    Game.Mixins.SimpleAttacker]
 }
 
 Game.fungusTemplate = {
   name: "Fungus",
   symbol: "F",
   foreground: "chartreuse",
-  mixins: [Game.Mixins.FungusActor]
+  mixins: [Game.Mixins.FungusActor, Game.Mixins.FragileDestructible]
 }
