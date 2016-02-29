@@ -82,6 +82,20 @@ Game.Screen.playScreen =
         display.draw(pos.x - topLeftX, pos.y - topLeftY, entity.getChar(),
           entity.getForeground(), entity.getBackground())
 
+    # Draw status
+    stats = '%c{white}%b{black}'
+    stats += vsprintf('HP: %d/%d', [@_player.getHp(), @_player.getMaxHp()])
+    stats += vsprintf(' Atk: %d Def: %d', [@_player.getAttack(),
+      @_player.getDef()])
+    display.drawText(0, screenHeight + 1, stats)
+
+    # Draw messages
+    messageY = screenHeight + 2
+    for message in @_player.getMessages()
+      messageY += display.drawText(
+        0, messageY, '%c{white}%b{black}' + message
+      )
+
   move: (cx, cy) ->
     # X
     dX = @_player.getX() + cx

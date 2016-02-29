@@ -5,7 +5,7 @@ class Entity extends Glyph
     super(options)
 
     # Grab our properties
-    @_name = options.name || ""
+    @name = options.name || ""
     @_x = options.x || 0
     @_y = options.y || 0
     @_map = options.map || null
@@ -85,8 +85,11 @@ Game.playerTemplate = {
   symbol: "@",
   foreground: "white",
   background: "black",
+  atkValue: 10,
+  maxHp: 40,
   mixins: [Game.Mixins.Movable, Game.Mixins.PlayerActor,
-    Game.Mixins.SimpleAttacker]
+    Game.Mixins.SimpleAttacker, Game.Mixins.MessageRecipient,
+    Game.Mixins.SimpleDestructible]
 }
 
 Game.fungusTemplate = {

@@ -61,6 +61,21 @@ class Map
 
     return false
 
+  getEntitiesWithinRadius: (centerX, centerY, radius) ->
+    results = []
+    leftX = centerX - radius
+    rightX = centerX + radius
+    topY = centerY - radius
+    bottomY = centerY + radius
+
+    for entity in @_entities
+      [x, y] = entity.getXY()
+      if x <= rightX and x >= leftX and y >= topY y <= bottomY
+        results.push(entity)
+
+    # Return results
+    results
+
   isEmptyFloor: (x, y) ->
     @getTile(x, y) == Game.Tile.floorTile and !@getEntityAt(x, y)
 

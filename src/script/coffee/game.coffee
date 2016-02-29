@@ -1,8 +1,10 @@
 Game =
   _display: null
   _currentScreen: null
-  _screenHeight: 24
+  _screenHeight: 31
   _screenWidth: 80
+  _messageHeight: 6
+  _statusHeight: 1
   init: ->
     # initialize the things
     @_display = new ROT.Display
@@ -32,7 +34,13 @@ Game =
     @_screenWidth
 
   getHeight: ->
-    @_screenHeight
+    @_screenHeight - @_messageHeight - @_statusHeight
+
+  getMessageHeight: ->
+    @_messageHeight
+
+  getStatusHeight: ->
+    @_statusHeight
 
   refresh: () ->
     if @_display != null and @_currentScreen != null
