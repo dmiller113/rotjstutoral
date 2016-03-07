@@ -75,12 +75,23 @@ Game.Screen.playScreen =
         display.draw(x - topLeftX, y - topLeftY, glyph.getChar(),
           glyph.getForeground(), glyph.getBackground())
 
+    player = null
+
     for entity in @_map.getEntities()
       pos = entity.getXY()
       if (pos.x >= topLeftX && pos.x < (topLeftX + screenWidth) &&
           pos.y >= topLeftY && pos.y < (topLeftY + screenHeight))
-        display.draw(pos.x - topLeftX, pos.y - topLeftY, entity.getChar(),
-          entity.getForeground(), entity.getBackground())
+
+        if entity.hasMixin("PlayerActor")
+          player = entity
+        else
+          display.draw(pos.x - topLeftX, pos.y - topLeftY, entity.getChar(),
+            entity.getForeground(), entity.getBackground())
+
+    # Draw the player last
+    pos = player.getXY()
+    display.draw(pos.x - topLeftX, pos.y - topLeftY, player.getChar(),
+      player.getForeground(), player.getBackground())
 
     # Draw status
     stats = '%c{white}%b{black}'
@@ -120,9 +131,9 @@ Game.Screen.playScreen =
         when ROT.VK_RIGHT
           @move(1, 0)
         when ROT.VK_UP
-            @move(0, -1);
+          @move(0, -1);
         when ROT.VK_DOWN
-            @move(0, 1);
+          @move(0, 1);
       @_map.getEngine().unlock()
 
 Game.Screen.winScreen =

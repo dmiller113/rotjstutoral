@@ -2,7 +2,7 @@ Game.Messages = {}
 
 Game.sendMessage = (recipient, message, args) ->
   if recipient.hasMixin("MessageRecipient")
-    if typeof args != undefined
+    if args
       message = vsprintf(message, args)
     recipient.recieveMessage(message)
 
@@ -17,3 +17,6 @@ Game.Messages.killMessage = "%s kills %s!"
 
 # Dying
 Game.Messages.dieMessage = "You die."
+
+# Full inventory
+Game.Messages.FullInventory = "Your inventory is full."

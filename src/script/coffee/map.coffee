@@ -21,6 +21,8 @@ class Map
     # Add some fungi
     for t in [0..19]
       @addEntityAtRandomPosition(new Entity(Game.fungusTemplate))
+      @addEntityAtRandomPosition(new Entity(Game.genericDataTemplate))
+      @addEntityAtRandomPosition(new Entity(Game.redDataTemplate))
 
   # Getters
   getWidth: ->
